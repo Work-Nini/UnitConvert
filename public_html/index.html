@@ -18,14 +18,32 @@ ScalingOfUnite
             }
         </style>
         <script>
-            function lengthConverter(valNum) {
-                document.getElementById("outputMeters").value = valNum / 100;
-                document.getElementById("outputKilo").value = valNum / 1000;
-                document.getElementById("outputFeet").value = valNum * 0.032808399;
+            function lengthConverter(valNum, unit) {
+                if(unit === "cm") {
+                    document.getElementById("outputMeters").value = valNum / 100;
+                    document.getElementById("outputKilo").value = valNum / 1000;
+                    document.getElementById("outputFeet").value = (valNum * 0.032808399).toFixed(2);
+                } else if (unit === "m") {
+                    document.getElementById("t1").value = valNum * 100;
+                    document.getElementById("outputKilo").value = valNum / 100;
+                    document.getElementById("outputFeet").value = (valNum * 3.2808399).toFixed(2);
+                } else if (unit === "km") {
+                    document.getElementById("t1").value = valNum * 100000;
+                    document.getElementById("outputMeters").value = valNum / 1000;
+                    document.getElementById("outputFeet").value = (valNum * 3280.8399).toFixed(2);
+                } else if (unit === "feet") {
+                    document.getElementById("t1").value = valNum * 30.48;
+                    document.getElementById("outputMeters").value = valNum * 0.3048;
+                    document.getElementById("outputKilo").value = (valNum * 0.0003048).toFixed(2);
+                }
             }
             
-            function tempConverter(valTemp) {
-                document.getElementById("C").value = (valTemp-32)* 5/9;
+            function tempConverter(valTemp, symbol) {
+                if (symbol === "F") {
+                     document.getElementById("C").value = ((valTemp-32)* 5/9).toFixed(2);
+                } else {
+                    document.getElementById("F").value = ((valTemp * 9/5) + 32).toFixed(2);
+                }
             }
         </script>
     </head>
@@ -34,16 +52,16 @@ ScalingOfUnite
             <fieldset>
                 <legend>長度換算</legend>
                 <p>
-                    <lable>公分<input type="number" id="t1" oninput="lengthConverter(this.value)" /></lable>
+                    <lable>公分<input type="number" id="t1" oninput="lengthConverter(this.value, 'cm')" /></lable>
                 </p>
                 <p>
-                    <lable>公尺<input type="number" id="outputMeters"/></lable>
+                    <lable>公尺<input type="number" id="outputMeters" oninput="lengthConverter(this.value, 'm')"/></lable>
                 </p>
                 <p>
-                    <lable>公里<input type="text" id="outputKilo"/></lable>
+                    <lable>公里<input type="number" id="outputKilo" oninput="lengthConverter(this.value, 'km')"/></lable>
                 </p>    
                 <p>
-                    <lable>英里<input type="text" id="outputFeet"/></lable>
+                    <lable>英里<input type="number" id="outputFeet" oninput="lengthConverter(this.value, 'feet')"/></lable>
                 </p>  
                 <div><input type="button" value="清除" onclick="reset()"></div>    
             </fieldset>
@@ -53,10 +71,10 @@ ScalingOfUnite
             <fieldset>
                 <legend>溫度換算</legend>
                 <p>
-                    <lable>華氏<input type="number" id="F" oninput="tempConverter(this.value)"/></lable>
+                    <lable>華氏<input type="number" id="F" oninput="tempConverter(this.value, 'F')"/></lable>
                 </p>
                 <p>
-                    <lable>攝氏<input type="number" id="C" /></lable>
+                    <lable>攝氏<input type="number" id="C" oninput="tempConverter(this.value, 'C')"/></lable>
                 </p>
                 <div><input type="submit" value="清除" onclick="reset()"></div>
             </fieldset>
